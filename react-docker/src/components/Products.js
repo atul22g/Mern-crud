@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
 
   // Edit
-  const [ename, setEname] = useState("");
-  const [eprice, setEprice] = useState("");
-
-  const editProduct = () => {};
+  const editProduct = async (id) => {
+    let name = prompt("Enter Product Name");
+    let price = prompt("Enter Product Price");
+    const res = await fetch(`http://localhost:5500/api/products/${id}`, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        price,
+      }),
+    });
+    const data = res.json();
+    if (!data || res.status === 400) {
+      alert("Product is Not Update");
+    } else {
+      alert("Product is Update");
+    }
+  };
   // Delete
   const deleteProduct = async (id) => {
-    console.log(id);
-    const res = await fetch(`http://localhost:5500/api/products/:${id}`, {
+    const res = await fetch(`http://localhost:5500/api/products/${id}`, {
       method: "Delete",
       headers: {
         "Content-Type": "application/json",
@@ -44,79 +58,6 @@ const Products = () => {
   }, [deleteProduct]);
   return (
     <>
-      {/* Edit Form */}
-      <div
-        className="modal fade"
-        id="editBtn"
-        aria-hidden="true"
-        aria-labelledby="exampleModalToggleLabel"
-        tabIndex="-1"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalToggleLabel">
-                Edit the Product
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <section>
-                <div className="mt-3">
-                  <label
-                    htmlFor="exampleFormControlInput1"
-                    className="form-label"
-                  >
-                    Enter Product Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={ename}
-                    onChange={(e) => setEname(e.target.value)}
-                    id="exampleFormControlInput1"
-                    placeholder="Enter The Product Name"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label
-                    htmlFor="exampleFormControlTextarea1"
-                    className="form-label"
-                  >
-                    Enter Product Price
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="exampleFormControlInput1"
-                    name="price"
-                    value={eprice}
-                    onChange={(e) => setEprice(e.target.value)}
-                    placeholder="Enter The Price"
-                  />
-                  <div className="col-12 mt-4">
-                    <button
-                      className="btn btn-primary"
-                      type="submit"
-                      onClick={editProduct}
-                    >
-                      Submit form
-                    </button>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Product */}
       <div className="App">
         <h1>My Products</h1>
         <table className="mt-3">
@@ -137,7 +78,6 @@ const Products = () => {
             {products.map((product) => {
               return (
                 <tr key={product._id}>
-                  {/* <div key={product._id}> */}
                   <td>
                     <h4>{product.name}</h4>
                   </td>
@@ -146,16 +86,14 @@ const Products = () => {
                   </td>
                   <td>
                     <i
-                      className="fa-solid fa-pen-nib me-3"
-                      data-bs-target="#editBtn"
-                      data-bs-toggle="modal"
+                      className="fa-solid fa-pen-nib me-3 c-pointer"
+                      onClick={() => editProduct(product._id)}
                     ></i>
                     <i
-                      className="fa-solid fa-trash ms-3"
+                      className="fa-solid fa-trash ms-3 c-pointer"
                       onClick={() => deleteProduct(product._id)}
                     ></i>
                   </td>
-                  {/* </div> */}
                 </tr>
               );
             })}

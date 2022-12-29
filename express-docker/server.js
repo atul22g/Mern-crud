@@ -1,6 +1,6 @@
 const express = require("express");
-// const PORT = process.env.PORT || 5500;
-const PORT = 5500;
+require('dotenv').config()
+const PORT = process.env.PORT;
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -8,14 +8,11 @@ app.use(express.json());
 app.use(cors());
 
 // Database connection
-mongoose
-  .connect("mongodb://root:secret@mongo:27017/products?authSource=admin")
-  .then(() => {
-    console.log(`connnection successful`);
-  })
-  .catch((err) => console.log(`no connection ` + err));
-
+require("./Database/conn");
+// UseSchema
 const Product = mongoose.model("Product", { name: String, price: Number });
+
+// Routes
 app.get("/", (req, res) => {
   return res.send("Welcome to Node js, express js in Docker");
 });
@@ -29,6 +26,36 @@ app.post("/api/products", async (req, res) => {
 app.get("/api/products", async (req, res) => {
   const products = await Product.find();
   return res.json(products);
+});
+
+// Find by Id
+app.get("/api/products/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const result = await Product.findById(_id);
+    return res.send("Result  " + result);
+  } catch (error) {
+    res.send("Err   " + error);
+  }
+});
+
+// update request?
+app.put("/api/products/:id", async (req, res) => {
+  // console.log(req.params.id);
+  try {
+    const result = await Product.updateMany(
+      { _id: req.params.id },
+      {
+        $set: {
+          name: req.body.name,
+          price: req.body.price,
+        },
+      }
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(400).send(error);
+  }
 });
 
 app.delete("/api/products/:id", async (req, res) => {
