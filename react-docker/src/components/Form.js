@@ -27,7 +27,7 @@ const Form = () => {
   return (
     <section className="container mt-5">
       <h1>Post Data</h1>
-      <div className="mb-3">
+      <div className="mt-3">
         <label htmlFor="exampleFormControlInput1" className="form-label">
           Enter Product Name
         </label>

@@ -7,7 +7,7 @@ const Nav = () => {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
-            Mern-api
+            Mern-crud
           </Link>
           <button
             className="navbar-toggler"
