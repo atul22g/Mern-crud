@@ -9,7 +9,7 @@ services:
     container_name: react-container
     environment:
       - WATCHPACK_POLLING=true
-    image: client
+    image: client:18.12.0-alpine
     networks:
       - mern-stack-network
     volumes:
@@ -20,7 +20,7 @@ services:
     build:
       context: './express-docker'
       dockerfile: Dockerfile
-    image: server
+    image: server:18.12.0-alpine
     ports:
       - 5500:5500
     container_name: express-container
@@ -31,19 +31,15 @@ services:
     depends_on:
       - mongo
   mongo:
-    image: mongo
+    image: mongo:6.0.3
     ports:
       - 27017:27017
     container_name: mongo-container
     networks:
       - mern-stack-network
     volumes:
-      - mongoData:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-      - MONGO_INITDB_DATABASE=ecom
+      - ./data/db:/data/db
 networks:
   mern-stack-network:
-volumes:
-  mongoData:
+# volumes:
+#   mongoData:
