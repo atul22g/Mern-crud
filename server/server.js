@@ -59,7 +59,9 @@ app.put("/api/products/:id", async (req, res) => {
 });
 
 app.delete("/api/products/:id", async (req, res) => {
-  const product = await Product.deleteOne({ id: req.params.id });
+  // console.log("Deleting......." + req.params.id);
+  const product = await Product.deleteOne({ _id: req.params.id });
+  console.log(product);
   return res.json(product);
 });
 

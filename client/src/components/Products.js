@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+const BackendURL = process.env.REACT_APP_BackendURL;
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -8,7 +9,7 @@ const Products = () => {
   const editProduct = async (id) => {
     let name = prompt("Enter Product Name");
     let price = prompt("Enter Product Price");
-    const res = await fetch(`http://localhost:5500/api/products/${id}`, {
+    const res = await fetch(BackendURL + `/api/products/${id}`, {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -25,9 +26,36 @@ const Products = () => {
       alert("Product is Update");
     }
   };
+
+  // Get All Projects
+  // useEffect(() => {
+  //   async function fetchProducts() {
+  //     try {
+  //       const { data } = await axios.get(BackendURL+"/api/products");
+  //       setProducts(data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  //   fetchProducts();
+  // }, [deleteProduct()]);
+
+  async function fetchProducts() {
+    try {
+      const { data } = await axios.get(BackendURL + "/api/products");
+      setProducts(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [1]);
+
   // Delete
   const deleteProduct = async (id) => {
-    const res = await fetch(`http://localhost:5500/api/products/${id}`, {
+    const res = await fetch(`${BackendURL}/api/products/${id}`, {
       method: "Delete",
       headers: {
         "Content-Type": "application/json",
@@ -36,26 +64,17 @@ const Products = () => {
         id,
       }),
     });
-    const data = res.json();
+    const data = await res.json();
+    console.log(data);
     if (!data || res.status === 400) {
       alert("Product is Not Delete");
     } else {
+      fetchProducts()
       alert("Product is Delete");
+
     }
   };
 
-  // Get All Projects
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const { data } = await axios.get("http://localhost:5500/api/products");
-        setProducts(data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchProducts();
-  }, [deleteProduct]);
   return (
     <>
       <div className="App">

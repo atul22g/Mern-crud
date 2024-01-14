@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+const BackendURL = process.env.REACT_APP_BackendURL;
 
 const Form = () => {
   const [name, setName] = useState("");
@@ -6,7 +7,7 @@ const Form = () => {
 
   const getProject = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5500/api/products", {
+    const res = await fetch(BackendURL+"/api/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
