@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const BackendURL = process.env.REACT_APP_BackendURL;
+const BackendURL = process.env.REACT_APP_BACKENDURL;
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -38,9 +38,11 @@ const Products = () => {
   //     }
   //   }
   //   fetchProducts();
-  // }, [deleteProduct()]);
+  // }, []);
 
   async function fetchProducts() {
+    console.log('asdfbrjib');
+    console.log(BackendURL);
     try {
       const { data } = await axios.get(BackendURL + "/api/products");
       setProducts(data);
@@ -51,7 +53,7 @@ const Products = () => {
 
   useEffect(() => {
     fetchProducts()
-  }, [1]);
+  });
 
   // Delete
   const deleteProduct = async (id) => {

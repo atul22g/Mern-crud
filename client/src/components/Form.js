@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const BackendURL = process.env.REACT_APP_BackendURL;
+const BackendURL = process.env.REACT_APP_BACKENDURL;
 
 const Form = () => {
   const [name, setName] = useState("");
