@@ -53,7 +53,7 @@ const Products = () => {
 
   useEffect(() => {
     fetchProducts()
-  });
+  }, []);
 
   // Delete
   const deleteProduct = async (id) => {
