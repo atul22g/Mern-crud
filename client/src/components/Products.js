@@ -41,8 +41,6 @@ const Products = () => {
   // }, []);
 
   async function fetchProducts() {
-    console.log('asdfbrjib');
-    console.log(BackendURL);
     try {
       const { data } = await axios.get(BackendURL + "/api/products");
       setProducts(data);

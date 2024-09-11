@@ -23,6 +23,7 @@ const Form = () => {
       alert("Form Not Submit");
     } else {
       alert("Form Submit");
+      window.location.reload();
     }
   };
   return (
