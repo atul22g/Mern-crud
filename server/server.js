@@ -13,6 +13,16 @@ require("./Database/conn");
 const Product = mongoose.model("Product", { name: String, price: Number });
 
 // Routes
+app.get('/db-status', async (req, res) => {
+  const db = mongoose.connection;
+  console.log(db.readyState);
+  if (db.readyState === 1) {
+    res.status(200).send('Database is connected');
+  } else {
+    res.status(500).send('Database is not connected');
+  }
+});
+
 app.get("/", (req, res) => {
   return res.send("Welcome to Node js, express js in Docker");
 });
